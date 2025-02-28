@@ -1,21 +1,28 @@
 <script lang="ts">
-    import { ConsoleErrorReporter, Counter } from "$lib"
-    import { provide } from "$lib/di";
+    import { ConsoleErrorReporter, App } from "$lib"
+    import { provide } from "$lib/internal.svelte";
     import ErrorBoundary from "$lib/ErrorBoundary.svelte";
 
     let { children } = $props()
 
     provide(
-        new Counter(),
-        new ConsoleErrorReporter(),
+        new App({
+            mode: "dev"
+        }),
+        new ConsoleErrorReporter
     );
+
+    // svelte, wtf?
+    type Unknown = unknown;
 </script>
 
-{#snippet fallback(error)}
+<!-- Root client side fallback. -->
+{#snippet fallback(error: Unknown)}
     <div>
         <h1>Something went wrong</h1>
     </div>
 {/snippet}
 
-{@render children()}
-
+<ErrorBoundary {fallback}>
+    {@render children()}
+</ErrorBoundary>

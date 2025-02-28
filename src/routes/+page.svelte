@@ -1,10 +1,7 @@
 <script lang="ts">
-    import { inject } from "$lib/di";
-    import { Counter } from "$lib";
+	import { inject } from "$lib/internal.svelte";
+    import { App } from "$lib";
 
-    let test = inject(Counter);
-    test.incrementCountMightThrow();
+    let app = inject(App);
 </script>
 
-<p>the count is {test.count}, doubled is {test.double}</p>
-<button onclick={test.incrementCountMightThrow}>increment</button>
